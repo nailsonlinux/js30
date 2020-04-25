@@ -1,56 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JS Reference VS Copy</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>JS Reference VS Copy</title>
+  </head>
+  <body>
+    <script>
+      const players = ["Wes", "Sarah", "Ryan", "Poppy"];
 
-  <script>
-    // start with strings, numbers and booleans
+      // and we want to make a copy of it.
+      const team = players;
 
-    // Let's say we have an array
-    const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+      console.log(players, team);
 
-    // and we want to make a copy of it.
+      // So, how do we fix this? We take a copy instead!
+      const team2 = players.slice();
 
-    // You might think we can just do something like this:
+      // or create a new array and concat the old one in
+      const team3 = [].concat(players);
 
-    // however what happens when we update that array?
+      // or use the new ES6 Spread
+      const team4 = [...players];
+      team4[3] = "heeee hawww";
+      console.log(team4);
 
-    // now here is the problem!
+      const team5 = Array.from(players);
 
-    // oh no - we have edited the original array too!
+      // with Objects
+      const person = {
+        name: "Wes Bos",
+        age: 80,
+      };
 
-    // Why? It's because that is an array reference, not an array copy. They both point to the same array!
+      // and think we make a copy:
+      // const captain = person;
+      // captain.number = 99;
 
-    // So, how do we fix this? We take a copy instead!
+      // how do we take a copy instead?
+      const cap2 = Object.assign({}, person, { number: 99, age: 12 });
+      console.log(cap2);
 
-    // one way
+      // We will hopefully soon see the object ...spread
+      const cap3 = { ...person };
+      console.log(cap3);
 
-    // or create a new array and concat the old one in
+      // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
 
-    // or use the new ES6 Spread
+      const nei = {
+        name: "Nailson",
+        age: 33,
+        social: {
+          twitter: "@nailson",
+          facebook: "nailsonlinux",
+        },
+      };
+      // BAD way to do Deep Copy. It does not copy functions and anything that does not exists on JSON
+      const ney = JSON.parse(JSON.stringify(nei));
 
-    // now when we update it, the original one isn't changed
+      ney.social.twitter = "@NeyLatorraca";
+      ney.name = "Ney Latorraca";
+      ney.social.facebook = null;
 
-    // The same thing goes for objects, let's say we have a person object
+      console.log(nei.social);
 
-    // with Objects
-    const person = {
-      name: 'Wes Bos',
-      age: 80
-    };
-
-    // and think we make a copy:
-
-    // how do we take a copy instead?
-
-    // We will hopefully soon see the object ...spread
-
-    // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
-
-  </script>
-
-</body>
+      console.log(ney.social);
+    </script>
+  </body>
 </html>
